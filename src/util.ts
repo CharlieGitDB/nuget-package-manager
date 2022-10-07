@@ -1,3 +1,4 @@
+import { exec } from "child-process-promise";
 import got from "got";
 import * as vscode from "vscode";
 import Package from "./types/Package";
@@ -65,4 +66,37 @@ export function getInstalledPackageOptions(shellResponse: string): string[] {
   const shellResponseSplit = shellResponse.split(">");
   const [ignore, ...rawPackages] = shellResponseSplit;
   return rawPackages.map((p) => p.split(" ")[1]);
+}
+
+export async function addPackage(
+  selectedProjectFilePath: string
+): Promise<void> {
+  const packageNameToSearch = await vscode.window.showInputBox({
+    placeHolder: "What is the name of the package you would like to add?",
+  });
+
+  const packageSearchResponse = await searchForPackage(
+    packageNameToSearch ?? ""
+  );
+
+  if (packageSearchResponse) {
+    const selectedPackage = await vscode.window.showQuickPick(
+      getPackageOptions(packageSearchResponse?.data)
+    );
+
+    if (selectedPackage) {
+      try {
+        await exec(
+          `dotnet add ${selectedProjectFilePath} package ${getPackageId(
+            selectedPackage
+          )}`
+        );
+        vscode.window.showInformationMessage(
+          "Successfully added package to project"
+        );
+      } catch (e) {
+        vscode.window.showErrorMessage("Unable to add package to project");
+      }
+    }
+  }
 }
