@@ -1,45 +1,22 @@
 import { exec } from "child-process-promise";
 import * as vscode from "vscode";
-import { ADD_NUGET_PACKAGE, REMOVE_NUGET_PACKAGE } from "./constants";
 import {
+  ADD_NUGET_PACKAGE,
+  CONTENT_MENU_ADD_NUGET_PACKAGE,
+  REMOVE_NUGET_PACKAGE,
+} from "./constants";
+import {
+  addPackage,
   getInstalledPackageOptions,
-  getPackageId,
-  getPackageOptions,
   getSelectedProjectPath,
-  searchForPackage,
 } from "./util";
 
 export function registerAddPackage(): vscode.Disposable {
   return vscode.commands.registerCommand(ADD_NUGET_PACKAGE, async () => {
     const selectedProjectFilePath = await getSelectedProjectPath();
 
-    const packageNameToSearch = await vscode.window.showInputBox({
-      placeHolder: "What is the name of the package you would like to add?",
-    });
-
-    const packageSearchResponse = await searchForPackage(
-      packageNameToSearch ?? ""
-    );
-
-    if (packageSearchResponse) {
-      const selectedPackage = await vscode.window.showQuickPick(
-        getPackageOptions(packageSearchResponse?.data)
-      );
-
-      if (selectedPackage) {
-        try {
-          await exec(
-            `dotnet add ${selectedProjectFilePath} package ${getPackageId(
-              selectedPackage
-            )}`
-          );
-          vscode.window.showInformationMessage(
-            "Successfully added package to project"
-          );
-        } catch (e) {
-          vscode.window.showErrorMessage("Unable to add package to project");
-        }
-      }
+    if (selectedProjectFilePath) {
+      addPackage(selectedProjectFilePath);
     }
   });
 }
@@ -79,4 +56,13 @@ export function registerRemovePackage(): vscode.Disposable {
       vscode.window.showErrorMessage("Unable to remove package from project");
     }
   });
+}
+
+export function registerContextMenuAddPackage(): vscode.Disposable {
+  return vscode.commands.registerCommand(
+    CONTENT_MENU_ADD_NUGET_PACKAGE,
+    ({ path }: { path: string }) => {
+      addPackage(path);
+    }
+  );
 }

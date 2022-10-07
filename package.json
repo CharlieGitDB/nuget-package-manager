@@ -11,7 +11,8 @@
   ],
   "activationEvents": [
     "onCommand:nuget-package-manager.addNugetPackage",
-    "onCommand:nuget-package-manager.removeNugetPackage"
+    "onCommand:nuget-package-manager.removeNugetPackage",
+    "onCommand:nuget-package-manager.contextMenuAddNugetPackage"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -23,8 +24,21 @@
       {
         "command": "nuget-package-manager.removeNugetPackage",
         "title": "Nuget Package Manager: Remove Package"
+      },
+      {
+        "command": "nuget-package-manager.contextMenuAddNugetPackage",
+        "title": "Add Package"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "nuget-package-manager.contextMenuAddNugetPackage",
+          "group": "7_modification",
+          "when": "resourceExtname == .csproj"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
