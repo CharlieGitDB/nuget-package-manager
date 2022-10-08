@@ -19,8 +19,6 @@ N/A
 
 ## Release Notes
 
-N/A
-
 ### 1.0.1
 
 Update package.json with useful information to be published to store
