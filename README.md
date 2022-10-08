@@ -19,6 +19,14 @@ N/A
 
 ## Release Notes
 
+### 1.0.3
+
+Change extension display name
+
+### 1.0.2
+
+Prepare for release to store
+
 ### 1.0.1
 
 Update package.json with useful information to be published to store
