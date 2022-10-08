@@ -1,9 +1,9 @@
 {
   "name": "nuget-package-manager",
-  "displayName": "Nuget Package Manager",
+  "displayName": "NuGet Package Manager",
   "publisher": "reswob",
   "description": "Extension for Visual Studio code that lets you add or remove packages from .csproj files",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": {
     "url": "https://github.com/CharlieGitDB/nuget-package-manager"
   },
