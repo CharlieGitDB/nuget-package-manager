@@ -1,4 +1,4 @@
-# NuGet Package Manager README
+# NuGet Package Manager
 
 ### NuGet package manager is a lightweight VSCode extension that allows you to easily add and remove NuGet packages.
 
