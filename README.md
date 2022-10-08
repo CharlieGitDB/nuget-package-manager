@@ -21,6 +21,10 @@ N/A
 
 N/A
 
+### 1.0.1
+
+Update package.json with useful information to be published to store
+
 ### 1.0.0
 
 Initial release of NuGet Package Manager extension
