@@ -19,6 +19,13 @@ N/A
 
 ## Release Notes
 
+### 1.1.2
+
+Fixed multiple bugs  
+- Do not search for packages when user has not input a value
+- Do not have extra command palette option that creates an error
+- Do not always select a project file when user has cancelled
+
 ### 1.0.3
 
 Change extension display name
