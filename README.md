@@ -19,6 +19,10 @@ N/A
 
 ## Release Notes
 
+### 1.1.3
+
+Add progress indicators
+
 ### 1.1.2
 
 Fixed multiple bugs  

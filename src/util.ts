@@ -31,23 +31,33 @@ export async function searchForPackage(
   packageName: string
 ): Promise<PackageSearchResponse | null> {
   return new Promise(async (resolve) => {
-    try {
-      const data = await got
-        .get(
-          `https://azuresearch-usnc.nuget.org/query?q=${encodeURIComponent(
-            packageName
-          )}`
-        )
-        .json();
+    vscode.window.withProgress({
+      location: vscode.ProgressLocation.Window,
+      cancellable: false,
+      title: 'Searching for packages..'
+    }, async (progress) => {
+        try {
+          progress.report({ increment: 0 });
 
-      if (data) {
-        resolve(data as PackageSearchResponse);
-      } else {
-        resolve(null);
-      }
-    } catch (e) {
-      resolve(null);
-    }
+          const data = await got
+            .get(
+              `https://azuresearch-usnc.nuget.org/query?q=${encodeURIComponent(
+                packageName
+              )}`
+            )
+            .json();
+
+          progress.report({ increment: 100 });
+          
+          if (data) {
+            resolve(data as PackageSearchResponse);
+          } else {
+            resolve(null);
+          }
+        } catch (e) {
+          resolve(null);
+        }
+      });
   });
 }
 
@@ -86,18 +96,29 @@ export async function addPackage(
     );
 
     if (selectedPackage) {
-      try {
-        await exec(
-          `dotnet add ${selectedProjectFilePath} package ${getPackageId(
-            selectedPackage
-          )}`
-        );
-        vscode.window.showInformationMessage(
-          "Successfully added package to project"
-        );
-      } catch (e) {
-        vscode.window.showErrorMessage("Unable to add package to project");
-      }
+      vscode.window.withProgress({
+        location: vscode.ProgressLocation.Window,
+        cancellable: false,
+        title: 'Adding package..'
+      }, async (progress) => {
+          try {
+            progress.report({ increment: 0 });
+
+            await exec(
+              `dotnet add ${selectedProjectFilePath} package ${getPackageId(
+                selectedPackage
+              )}`
+            );
+
+            progress.report({ increment: 100 });
+            
+            vscode.window.showInformationMessage(
+              "Successfully added package to project"
+            );
+          } catch (e) {
+            vscode.window.showErrorMessage("Unable to add package to project");
+          }
+        });
     }
   }
 }
