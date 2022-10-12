@@ -2,7 +2,6 @@ import { exec } from "child-process-promise";
 import * as vscode from "vscode";
 import {
   ADD_NUGET_PACKAGE,
-  CONTENT_MENU_ADD_NUGET_PACKAGE,
   REMOVE_NUGET_PACKAGE,
 } from "./constants";
 import {
@@ -12,8 +11,8 @@ import {
 } from "./util";
 
 export function registerAddPackage(): vscode.Disposable {
-  return vscode.commands.registerCommand(ADD_NUGET_PACKAGE, async () => {
-    const selectedProjectFilePath = await getSelectedProjectPath();
+  return vscode.commands.registerCommand(ADD_NUGET_PACKAGE, async (ctx) => {
+    const selectedProjectFilePath = ctx?.path ?? await getSelectedProjectPath();
 
     if (selectedProjectFilePath) {
       addPackage(selectedProjectFilePath);
@@ -56,13 +55,4 @@ export function registerRemovePackage(): vscode.Disposable {
       vscode.window.showErrorMessage("Unable to remove package from project");
     }
   });
-}
-
-export function registerContextMenuAddPackage(): vscode.Disposable {
-  return vscode.commands.registerCommand(
-    CONTENT_MENU_ADD_NUGET_PACKAGE,
-    ({ path }: { path: string }) => {
-      addPackage(path);
-    }
-  );
 }

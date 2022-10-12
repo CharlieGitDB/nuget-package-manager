@@ -17,15 +17,12 @@ export async function getSelectedProjectPath(): Promise<string | null> {
   }
 
   const fullProjectFilePaths = projectFiles.map((pf) => pf.path);
-  const projectFilePaths = fullProjectFilePaths.map((fp) =>
-    getCleanFilePath(fp)
-  );
-  const selectedProjectFilePath = await vscode.window.showQuickPick(
-    projectFilePaths
-  );
-  const fullSelectedProjectFilePath = fullProjectFilePaths.find((fp) =>
-    fp.includes(selectedProjectFilePath ?? "")
-  );
+  const quickPickItems: vscode.QuickPickItem[] = fullProjectFilePaths.map((p) => ({
+    label: getCleanFilePath(p),
+    detail: p
+  }));
+  const selectedProjectFilePath = await vscode.window.showQuickPick(quickPickItems);
+  const fullSelectedProjectFilePath = fullProjectFilePaths.find((fp) => fp === selectedProjectFilePath?.detail);
 
   return fullSelectedProjectFilePath ?? null;
 }

@@ -3,7 +3,6 @@
 import * as vscode from "vscode";
 import {
   registerAddPackage,
-  registerContextMenuAddPackage,
   registerRemovePackage,
 } from "./commands";
 
@@ -13,7 +12,6 @@ export function activate(context: vscode.ExtensionContext) {
   let disposables = [
     registerAddPackage(),
     registerRemovePackage(),
-    registerContextMenuAddPackage(),
   ];
   disposables.forEach((d) => context.subscriptions.push(d));
 }
