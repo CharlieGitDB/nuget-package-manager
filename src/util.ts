@@ -72,6 +72,10 @@ export async function addPackage(
     placeHolder: "What is the name of the package you would like to add?",
   });
 
+  if (!packageNameToSearch) {
+    return;
+  }
+
   const packageSearchResponse = await searchForPackage(
     packageNameToSearch ?? ""
   );
